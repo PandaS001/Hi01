@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Приглашение на встречу 🌸</title>
+
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23f28ab2'%3E%3Cellipse cx='50' cy='22' rx='13' ry='17'/%3E%3Cellipse cx='76' cy='42' rx='13' ry='17' transform='rotate(72 76 42)'/%3E%3Cellipse cx='66' cy='74' rx='13' ry='17' transform='rotate(144 66 74)'/%3E%3Cellipse cx='34' cy='74' rx='13' ry='17' transform='rotate(216 34 74)'/%3E%3Cellipse cx='24' cy='42' rx='13' ry='17' transform='rotate(288 24 42)'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='11' fill='%23ffe0ec'/%3E%3Ccircle cx='50' cy='50' r='5' fill='%23ffb3c6'/%3E%3C/svg%3E">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #fff0f5 0%, #ffe4ec 40%, #fdd5e3 100%);
+      font-family: 'Segoe UI', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+      color: #5a2e3f;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px 16px; overflow-x: hidden; position: relative;
+    }
+    #fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .sakura-petal {
+      position: absolute; top: -20px;
+      border-radius: 70% 0 70% 0;
+      background: radial-gradient(circle at 30% 30%, #ffc0d0, #ff9eb5);
+      opacity: 0.85; animation: fallSakura linear forwards;
+    }
+    @keyframes fallSakura {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0.9; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.1; }
+    }
+    .confetti {
+      position: absolute; top: -10px; border-radius: 2px; opacity: 0.9;
+      animation: fallConfetti linear forwards;
+    }
+    @keyframes fallConfetti {
+      0%   { transform: translateY(-10px) rotate(0deg);   opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+    }
+    #intro {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #fff5f8 0%, #ffe4ec 50%, #fdd5e3 100%);
+      animation: introLife 4s ease forwards; cursor: pointer;
+    }
+    @keyframes introLife {
+      0% { opacity: 0; } 15% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; }
+    }
+    .intro-tree {
+      width: 260px; height: 320px;
+      animation: treeGrow 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      transform-origin: center bottom;
+      filter: drop-shadow(0 8px 24px rgba(210, 110, 150, 0.25));
+    }
+    @keyframes treeGrow {
+      0%   { transform: scale(0.4) translateY(40px); opacity: 0; }
+      55%  { transform: scale(1.02) translateY(0);   opacity: 1; }
+      100% { transform: scale(1.05) translateY(0);   opacity: 1; }
+    }
+    .intro-petals { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .intro-petal {
+      position: absolute; top: -20px;
+      border-radius: 70% 0 70% 0;
+      background: radial-gradient(circle at 30% 30%, #ffc0d0, #ff9eb5);
+      opacity: 0.9; animation: fallSakura 6s linear forwards;
+    }
+    .card {
+      position: relative; z-index: 10; width: 100%; max-width: 420px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-radius: 32px; padding: 26px 20px 24px;
+      box-shadow: 0 20px 40px rgba(200, 120, 150, 0.25),
+                  0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: cardIn 1.2s ease 2.8s both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+    .title {
+      text-align: center; font-size: 22px; font-weight: 700;
+      color: #b3416a; margin-bottom: 14px; line-height: 1.25;
+    }
+    .progress { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .progress-bar { flex: 1; height: 6px; background: #f7d6e1; border-radius: 10px; overflow: hidden; }
+    .progress-fill {
+      height: 100%; width: 16.6%;
+      background: linear-gradient(90deg, #f28ab2, #d95f87);
+      border-radius: 10px; transition: width 0.4s ease;
+    }
+    .progress-text { font-size: 12px; font-weight: 600; color: #b87a8e; min-width: 34px; text-align: right; }
+    .steps { position: relative; }
+    .step { display: none; }
+    .step.active { display: block; animation: stepIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .step label { display: block; font-size: 15px; font-weight: 600; color: #7d3b58; margin-bottom: 12px; line-height: 1.35; }
+    .step input[type="text"],
+    .step input[type="date"],
+    .step input[type="time"] {
+      width: 100%; padding: 14px 16px; border-radius: 18px;
+      border: 1.5px solid #f3c6d4; background: rgba(255, 255, 255, 0.92);
+      font-size: 16px; color: #5a2e3f; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit; -webkit-appearance: none;
+    }
+    .step input:focus { border-color: #e88aa8; box-shadow: 0 0 0 4px rgba(232, 138, 168, 0.15); }
+    .range-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .range-wrap input[type="range"] {
+      flex: 1; -webkit-appearance: none; appearance: none; height: 8px;
+      border-radius: 10px; background: linear-gradient(to right, #f9c5d5, #e86a92); outline: none;
+    }
+    .range-wrap input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%;
+      background: #ffffff; border: 3px solid #e86a92;
+      box-shadow: 0 2px 8px rgba(200, 100, 140, 0.4); cursor: pointer;
+    }
+    .range-wrap input[type="range"]::-moz-range-thumb {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: #ffffff; border: 3px solid #e86a92; cursor: pointer;
+    }
+    .range-value { font-size: 18px; font-weight: 700; color: #b3416a; min-width: 52px; text-align: right; }
+
+    .next {
+      width: 100%; margin-top: 16px; padding: 15px;
+      border: none; border-radius: 20px;
+      background: linear-gradient(135deg, #f28ab2, #d95f87);
+      color: #ffffff; font-size: 16px; font-weight: 700;
+      letter-spacing: 0.3px; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(217, 95, 135, 0.32);
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+    .next:active { transform: scale(0.97); }
+    .next:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+    .wa-btn {
+      width: 100%; margin-top: 16px; padding: 15px;
+      border: none; border-radius: 20px;
+      background: linear-gradient(135deg, #f07ca6, #cf4a78);
+      color: #ffffff; font-size: 16px; font-weight: 700;
+      letter-spacing: 0.3px; cursor: pointer;
+      box-shadow: 0 8px 22px rgba(207, 74, 120, 0.4);
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .wa-btn:active { transform: scale(0.97); }
+    .wa-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .status { margin-top: 14px; text-align: center; font-size: 14px; min-height: 22px; color: #a5536e; line-height: 1.4; }
+    .status.success { color: #2e7d5b; font-weight: 600; }
+    .status.error   { color: #c43d5b; font-weight: 600; }
+
+    .music-toggle {
+      position: fixed;
+      right: 16px; bottom: 16px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #f28ab2, #d95f87);
+      color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(217, 95, 135, 0.45);
+      z-index: 2000;
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .music-toggle:active { transform: scale(0.92); }
+    .music-toggle svg { width: 26px; height: 26px; }
+    .music-toggle.playing {
+      animation: musicPulse 2s ease-in-out infinite;
+    }
+    @keyframes musicPulse {
+      0%, 100% { box-shadow: 0 8px 22px rgba(217, 95, 135, 0.45); }
+      50%      { box-shadow: 0 8px 22px rgba(217, 95, 135, 0.45), 0 0 0 8px rgba(242, 138, 178, 0.15); }
+    }
+    .music-toggle.muted {
+      background: rgba(180, 140, 155, 0.65);
+      box-shadow: 0 6px 16px rgba(150, 100, 120, 0.3);
+      animation: none;
+    }
+    .music-toggle.muted::after {
+      content: '';
+      position: absolute;
+      width: 60%; height: 3px;
+      background: #ffffff;
+      border-radius: 2px;
+      transform: rotate(-45deg);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 380px) {
+      .card { padding: 22px 14px 20px; border-radius: 26px; }
+      .title { font-size: 20px; }
+      .intro-tree { width: 220px; height: 270px; }
+      .music-toggle { width: 50px; height: 50px; right: 12px; bottom: 12px; }
+      .music-toggle svg { width: 22px; height: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Фоновая музыка: файл 01.mp3 в той же папке -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="01.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Круглая кнопка музыки -->
+  <button id="musicToggle" class="music-toggle" aria-label="Выключить музыку">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+  </button>
+
+  <div id="intro" aria-hidden="true">
+    <div class="intro-petals" id="introPetals"></div>
+    <svg class="intro-tree" viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="blossom1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffe0ec"/><stop offset="100%" stop-color="#f28ab2"/>
+        </radialGradient>
+        <radialGradient id="blossom2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffd0e0"/><stop offset="100%" stop-color="#e86a92"/>
+        </radialGradient>
+      </defs>
+      <path d="M120 300 L120 200 Q118 180 105 165 Q92 150 96 128" stroke="#7a4a35" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <path d="M120 215 Q95 200 70 180 Q50 162 42 138" stroke="#7a4a35" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M120 205 Q148 190 172 172 Q192 155 198 132" stroke="#7a4a35" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M78 185 Q62 170 55 148" stroke="#7a4a35" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M160 178 Q172 165 175 145" stroke="#7a4a35" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M102 145 Q90 130 85 112" stroke="#7a4a35" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <circle cx="45" cy="130" r="26" fill="url(#blossom1)" opacity="0.95"/>
+      <circle cx="62" cy="120" r="22" fill="url(#blossom2)" opacity="0.90"/>
+      <circle cx="55" cy="148" r="20" fill="url(#blossom1)" opacity="0.85"/>
+      <circle cx="85" cy="108" r="22" fill="url(#blossom2)" opacity="0.90"/>
+      <circle cx="100" cy="115" r="18" fill="url(#blossom1)" opacity="0.85"/>
+      <circle cx="80" cy="130" r="16" fill="url(#blossom2)" opacity="0.80"/>
+      <circle cx="198" cy="128" r="26" fill="url(#blossom1)" opacity="0.95"/>
+      <circle cx="178" cy="118" r="22" fill="url(#blossom2)" opacity="0.90"/>
+      <circle cx="190" cy="145" r="20" fill="url(#blossom1)" opacity="0.85"/>
+      <circle cx="160" cy="115" r="20" fill="url(#blossom2)" opacity="0.90"/>
+      <circle cx="148" cy="128" r="16" fill="url(#blossom1)" opacity="0.80"/>
+      <g fill="#fff5f8" opacity="0.65">
+        <circle cx="40" cy="122" r="8"/><circle cx="80" cy="102" r="7"/>
+        <circle cx="195" cy="122" r="8"/><circle cx="170" cy="110" r="6"/>
+        <circle cx="58" cy="140" r="5"/><circle cx="185" cy="138" r="5"/>
+      </g>
+    </svg>
+  </div>
+
+  <div id="fx-layer" aria-hidden="true"></div>
+
+  <main class="card">
+    <h1 class="title">Приглашаю тебя на свидание 🌸</h1>
+
+    <div class="progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-text" id="progressText">1 / 6</span>
+    </div>
+
+    <form id="inviteForm" novalidate>
+      <div class="steps">
+
+        <section class="step active">
+          <label>📅 Когда нам встретиться?</label>
+          <input type="date" id="date" required>
+          <button type="button" class="next" disabled>Далее →</button>
+        </section>
+
+        <section class="step">
+          <label>🕐 В какое время?</label>
+          <input type="time" id="time" required>
+          <button type="button" class="next" disabled>Далее →</button>
+        </section>
+
+        <section class="step">
+          <label>📍 Где встретимся?</label>
+          <input type="text" id="place" placeholder="Например: парк у фонтана, кафе «Розовый сад»…" maxlength="200" required>
+          <button type="button" class="next" disabled>Далее →</button>
+        </section>
+
+        <section class="step">
+          <label>🌷 Твои любимые цветы?</label>
+          <input type="text" id="flowers" placeholder="Пионы, ромашки, розы…" maxlength="200" required>
+          <button type="button" class="next" disabled>Далее →</button>
+        </section>
+
+        <section class="step">
+          <label>🍫 Любимая шоколадная плитка?</label>
+          <input type="text" id="chocolate" placeholder="Молочный, тёмный, с орехами…" maxlength="200" required>
+          <button type="button" class="next" disabled>Далее →</button>
+        </section>
+
+        <section class="step">
+          <label>💖 Насколько тебе нравится тот, кто отправил эту ссылку?</label>
+          <div class="range-wrap">
+            <input type="range" id="rating" min="1" max="100" value="50">
+            <span class="range-value" id="ratingValue">50%</span>
+          </div>
+          <button type="button" class="wa-btn" id="waBtn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.5 3.5A11.5 11.5 0 0 0 3.1 17.4L2 22l4.7-1.1a11.5 11.5 0 0 0 13.8-17.4zM12 20a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.6.6-2.7-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2.1-.2 0-.3 0-.4l-.7-1.6c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-1 2.2 5.2 5.2 0 0 0 1.1 2.8 11.8 11.8 0 0 0 4.5 4c1.5.6 2.2.6 3 .5.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3z"/>
+            </svg>
+            Отправить в WhatsApp 💬
+          </button>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+        </section>
+
+      </div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      // ============ НАСТРОЙКИ ============
+      const WA_PHONE = '79319980612'; // номер WhatsApp (без +)
+      // ===================================
+
+      /* ---------- МУЗЫКА ---------- */
+      const music = document.getElementById('bgMusic');
+      const musicToggle = document.getElementById('musicToggle');
+      let userPaused = false;
+      music.volume = 0.45;
+
+      function setMusicState(playing) {
+        if (playing) {
+          musicToggle.classList.remove('muted');
+          musicToggle.classList.add('playing');
+          musicToggle.setAttribute('aria-label', 'Выключить музыку');
+        } else {
+          musicToggle.classList.add('muted');
+          musicToggle.classList.remove('playing');
+          musicToggle.setAttribute('aria-label', 'Включить музыку');
+        }
+      }
+
+      async function playMusic() {
+        try {
+          await music.play();
+          setMusicState(true);
+          return true;
+        } catch (e) {
+          setMusicState(false);
+          return false;
+        }
+      }
+
+      function pauseMusic() {
+        music.pause();
+        setMusicState(false);
+      }
+
+      // Пытаемся включить сразу при загрузке
+      setMusicState(true);
+      playMusic();
+      music.addEventListener('canplaythrough', () => {
+        if (!userPaused && music.paused) playMusic();
+      }, { once: true });
+
+      // Авто-включение при первом касании/клике (обход блокировки автоплея)
+      function startOnInteraction() {
+        if (!userPaused && music.paused) playMusic();
+      }
+      document.addEventListener('click', startOnInteraction);
+      document.addEventListener('touchstart', startOnInteraction, { passive: true });
+      document.addEventListener('keydown', startOnInteraction);
+
+      // Кнопка вкл/выкл
+      musicToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (music.paused) {
+          userPaused = false;
+          playMusic();
+        } else {
+          userPaused = true;
+          pauseMusic();
+        }
+      });
+
+      /* ---------- ЛЕПЕСТКИ И КОНФЕТТИ ---------- */
+      const fxLayer = document.getElementById('fx-layer');
+      const rnd = (a, b) => Math.random() * (b - a) + a;
+
+      function spawnPetal() {
+        const el = document.createElement('div');
+        el.className = 'sakura-petal';
+        const s = rnd(10, 18);
+        el.style.width = s + 'px';
+        el.style.height = s * 1.1 + 'px';
+        el.style.left = rnd(0, window.innerWidth) + 'px';
+        el.style.animationDuration = rnd(6, 12) + 's';
+        el.style.animationDelay = rnd(0, 2) + 's';
+        fxLayer.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+
+      function spawnConfetti() {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        const colors = ['#ff9eb5','#ffc0d0','#f7a1c4','#ffb3c6','#f28ab2','#e86a92'];
+        el.style.background = colors[(Math.random() * colors.length) | 0];
+        el.style.left = rnd(0, window.innerWidth) + 'px';
+        el.style.width = rnd(4, 8) + 'px';
+        el.style.height = rnd(8, 14) + 'px';
+        el.style.animationDuration = rnd(4, 9) + 's';
+        el.style.animationDelay = rnd(0, 1.5) + 's';
+        fxLayer.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+
+      setInterval(spawnPetal, 420);
+      setInterval(spawnConfetti, 300);
+
+      const introPetals = document.getElementById('introPetals');
+      for (let i = 0; i < 14; i++) {
+        const p = document.createElement('div');
+        p.className = 'intro-petal';
+        const s = rnd(8, 16);
+        p.style.width = s + 'px';
+        p.style.height = s * 1.1 + 'px';
+        p.style.left = rnd(0, window.innerWidth) + 'px';
+        p.style.animationDuration = rnd(4, 8) + 's';
+        p.style.animationDelay = rnd(0, 1.5) + 's';
+        introPetals.appendChild(p);
+      }
+
+      const intro = document.getElementById('intro');
+      let introDone = false;
+      function finishIntro(skipped) {
+        if (introDone) return;
+        introDone = true;
+        if (intro && intro.parentNode) intro.remove();
+        if (skipped) {
+          document.querySelector('.card').style.animation = 'cardIn 0.6s ease both';
+        }
+      }
+      setTimeout(() => finishIntro(false), 4100);
+      intro.addEventListener('click', () => finishIntro(true));
+
+      /* ---------- ПОШАГОВАЯ ФОРМА ---------- */
+      const steps = Array.from(document.querySelectorAll('.step'));
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+      let current = 0;
+
+      function updateProgress() {
+        const total = steps.length;
+        progressFill.style.width = (((current + 1) / total) * 100) + '%';
+        progressText.textContent = (current + 1) + ' / ' + total;
+      }
+      updateProgress();
+
+      function goToStep(i) {
+        steps[current].classList.remove('active');
+        current = i;
+        steps[current].classList.add('active');
+        updateProgress();
+        const inp = steps[current].querySelector('input:not([type="range"])');
+        if (inp) setTimeout(() => inp.focus({ preventScroll: true }), 50);
+      }
+
+      steps.forEach((step, i) => {
+        const btn = step.querySelector('.next');
+        if (!btn) return;
+        const textInput = step.querySelector('input:not([type="range"])');
+        if (textInput) {
+          const check = () => { btn.disabled = !textInput.value.trim(); };
+          textInput.addEventListener('input', check);
+          textInput.addEventListener('change', check);
+          check();
+        }
+        btn.addEventListener('click', () => {
+          if (textInput && !textInput.value.trim()) return;
+          if (i < steps.length - 1) goToStep(i + 1);
+        });
+      });
+
+      const ratingInput = document.getElementById('rating');
+      const ratingValue = document.getElementById('ratingValue');
+      ratingInput.addEventListener('input', function () {
+        ratingValue.textContent = this.value + '%';
+      });
+
+      /* ---------- ОТПРАВКА В WHATSAPP ---------- */
+      const statusEl = document.getElementById('status');
+      const waBtn = document.getElementById('waBtn');
+
+      function collectPayload() {
+        return {
+          date:      document.getElementById('date').value,
+          time:      document.getElementById('time').value,
+          place:     document.getElementById('place').value.trim(),
+          flowers:   document.getElementById('flowers').value.trim(),
+          chocolate: document.getElementById('chocolate').value.trim(),
+          rating:    ratingInput.value
+        };
+      }
+
+      function buildWaText(d) {
+        return (
+          '🌸 Новый ответ на приглашение 🌸\n\n' +
+          '📅 Дата: ' + d.date + '\n' +
+          '🕐 Время: ' + d.time + '\n' +
+          '📍 Место: ' + d.place + '\n\n' +
+          '🌷 Любимые цветы: ' + d.flowers + '\n' +
+          '🍫 Шоколад: ' + d.chocolate + '\n\n' +
+          '💖 Насколько нравится отправитель: ' + d.rating + '%'
+        );
+      }
+
+      waBtn.addEventListener('click', () => {
+        const payload = collectPayload();
+        const text = buildWaText(payload);
+        const url = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(text);
+
+        window.open(url, '_blank', 'noopener');
+
+        statusEl.textContent = 'Открываю WhatsApp… Нажми «Отправить» в чате 🌸';
+        statusEl.className = 'status success';
+
+        for (let i = 0; i < 40; i++) setTimeout(spawnConfetti, i * 30);
+      });
+    })();
+  </script>
+</body>
+</html>
